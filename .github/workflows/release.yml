@@ -12,18 +12,14 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Install zip
-        run: sudo apt install zip
-
       - name: Get latest code
         uses: actions/checkout@v4
 
       - name: Bundle files
         run: |
-          mkdir -p ./temp/pulsar-jobs
-          cp ./{README.md,fxmanifest.lua} ./temp/pulsar-jobs
-          cp -r ./{client,server,config} ./temp/pulsar-jobs
-          cd ./temp && zip -r ../pulsar-jobs.zip ./pulsar-jobs
+          mkdir -p staging/pulsar-jobs
+          rsync -a --exclude='.github' --exclude='node_modules' --exclude='staging' . staging/pulsar-jobs/
+          cd staging && zip -r ../pulsar-jobs.zip pulsar-jobs/
 
       - name: Create release
         uses: softprops/action-gh-release@v2
