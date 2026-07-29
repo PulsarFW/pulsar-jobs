@@ -1,22 +1,31 @@
-fx_version("cerulean")
-game("gta5")
-lua54("yes")
-version "1.0.1"
+fx_version 'cerulean'
+game 'gta5'
 
-client_script("@pulsar-core/exports/cl_error.lua")
-client_script("@pulsar-pwnzor/client/check.lua")
+name 'Pulsar Jobs'
+description 'Employment system with job/grade assignment, duty toggling, and salary payout'
+author 'Artmines - maintained for Pulsar Framework'
+url 'https://pulsarframe.work'
+version 'v1.0.0'
+
+version_check 'yes'
+github 'https://github.com/PulsarFW/pulsar_jobs'
+
+client_script '@pulsar_core/components/cl_error.lua'
+shared_script '@pulsar_core/core/sh_pulsar.lua'
+client_script '@pulsar_pwnzor/client/check.lua'
 
 server_scripts({
-  '@oxmysql/lib/MySQL.lua',
-  "server/**/*.lua",
+	'server/**/*.lua',
 })
 
 shared_scripts({
-  "config/config.lua",
-  "config/spawns.lua",
-  "config/defaultJobs/*.lua",
+	'config/config.lua',
+	'config/spawns.lua',
+	'config/defaultJobs/*.lua',
 })
 
 client_scripts({
-  "client/**/*.lua",
+	'client/**/*.lua',
 })
+
+lua54 'yes'

@@ -1,6 +1,6 @@
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683997150,
+	LastUpdated = 1784524361,
 	Id = "triad",
 	Name = "Triad Records",
 	Salary = 600,
@@ -32,6 +32,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -45,7 +51,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683673432,
+	LastUpdated = 1784524361,
 	Id = "triad_boxing",
 	Name = "Triad Boxing",
 	Salary = 300,
@@ -77,6 +83,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -89,7 +101,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1653244196,
+	LastUpdated = 1784524361,
 	Id = "triad_holdings",
 	Name = "Triad Holdings LLC",
 	Salary = 300,
@@ -121,6 +133,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,

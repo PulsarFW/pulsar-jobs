@@ -4,165 +4,193 @@ JOB_COUNT = 0
 
 _loaded = false
 
-AddEventHandler('onResourceStart', function(resource)
-  if resource == GetCurrentResourceName() then
-    Wait(1000)
-    RegisterJobMiddleware()
-    RegisterJobCallbacks()
-    RegisterJobChatCommands()
+CreateThread(function()
+	RegisterJobMiddleware()
+	RegisterJobCallbacks()
+	RegisterJobChatCommands()
 
-    _loaded = true
+	_loaded = true
 
-    RunStartup()
+	RunStartup()
 
-    TriggerEvent("Jobs:Server:Startup")
-    exports['pulsar-core']:VersionCheck('PulsarFW/pulsar-jobs')
-  end
+	TriggerEvent("Jobs:Server:Startup")
 end)
 
-function FindAllJobs()
-  local results = MySQL.query.await('SELECT * FROM jobs', {})
+-- `job_id`/`type`/`last_updated` are real columns since they're all queried across rows
+-- (default-job version checks, Government/Company aggregation); everything else stays in `data`.
+-- `jobs` is fully loaded into JOB_CACHE at boot and after every mutation (RefreshAllJobData), so
+-- writes just persist the whole doc and let that refresh rebuild state, same idea as `_properties`.
+local _jobsTableReady = false
+function EnsureJobsTable(callback)
+	if _jobsTableReady then
+		if callback then
+			callback()
+		end
+		return
+	end
+	plsr.Database:Query(
+		"CREATE TABLE IF NOT EXISTS `jobs` (`id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, `job_id` VARCHAR(191) NOT NULL, `type` VARCHAR(191) NULL, `last_updated` BIGINT NULL, `data` JSON NOT NULL, UNIQUE INDEX `idx_job_id` (`job_id`), INDEX `idx_type` (`type`))",
+		nil,
+		function()
+			_jobsTableReady = true
+			if callback then
+				callback()
+			end
+		end
+	)
+end
 
-  if results and #results > 0 then
-    return results
-  else
-    return {}
-  end
+function GetJobRow(jobId, callback)
+	EnsureJobsTable(function()
+		plsr.Database:Single("SELECT `id`, `data` FROM `jobs` WHERE `job_id` = ?", { jobId }, function(success, row)
+			if not success or row == nil then
+				callback(nil)
+				return
+			end
+			local ok, doc = pcall(json.decode, row.data)
+			if not ok or type(doc) ~= "table" then
+				callback(nil)
+				return
+			end
+			doc._id = row.id
+			callback(doc)
+		end)
+	end)
+end
+
+function PersistJobDoc(doc, callback)
+	local toEncode = {}
+	for k, v in pairs(doc) do
+		toEncode[k] = v
+	end
+	toEncode._id = nil
+
+	EnsureJobsTable(function()
+		plsr.Database:Update(
+			"INSERT INTO `jobs` (`job_id`, `type`, `last_updated`, `data`) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `type` = VALUES(`type`), `last_updated` = VALUES(`last_updated`), `data` = VALUES(`data`)",
+			{ toEncode.Id, toEncode.Type, toEncode.LastUpdated, json.encode(toEncode) },
+			function(success)
+				if callback then
+					callback(success)
+				end
+			end
+		)
+	end)
+end
+
+function FindAllJobs()
+	local p = promise.new()
+
+	EnsureJobsTable(function()
+		plsr.Database:Query("SELECT `id`, `data` FROM `jobs`", nil, function(success, rows)
+			if not success then
+				p:resolve({})
+				return
+			end
+			local results = {}
+			for k, row in ipairs(rows) do
+				local ok, doc = pcall(json.decode, row.data)
+				if ok and type(doc) == "table" then
+					doc._id = row.id
+					table.insert(results, doc)
+				end
+			end
+			p:resolve(results)
+		end)
+	end)
+
+	local res = Citizen.Await(p)
+	return res
 end
 
 function RefreshAllJobData(job)
-  local jobsFetch = FindAllJobs()
-  JOB_COUNT = #jobsFetch
-  for k, v in ipairs(jobsFetch) do
-    JOB_CACHE[v.Id] = v
-    if v.Workplaces ~= nil then
-      JOB_CACHE[v.Id].Workplaces = json.decode(v.Workplaces or {})
-    end
+	local jobsFetch = FindAllJobs()
+	JOB_COUNT = #jobsFetch
+	for k, v in ipairs(jobsFetch) do
+		JOB_CACHE[v.Id] = v
+	end
 
-    if v.Grades ~= nil then
-      JOB_CACHE[v.Id].Grades = json.decode(v.Grades or {})
-    end
-  end
+	TriggerEvent("Jobs:Server:UpdatedCache", job or -1)
 
-  TriggerEvent("Jobs:Server:UpdatedCache", job or -1)
+	-- Same info FindAllJobs already pulled; compute the GlobalState perm keys in Lua instead of
+	-- a second/third DB round trip via Mongo-style $unwind aggregation.
+	for k, v in ipairs(jobsFetch) do
+		if v.Type == "Government" and v.Workplaces then
+			for _, workplace in ipairs(v.Workplaces) do
+				if workplace.Grades then
+					for _, grade in ipairs(workplace.Grades) do
+						local key = string.format("JobPerms:%s:%s:%s", v.Id, workplace.Id, grade.Id)
+						GlobalState[key] = grade.Permissions
+					end
+				end
+			end
+		elseif v.Type == "Company" and v.Grades then
+			for _, grade in ipairs(v.Grades) do
+				local key = string.format("JobPerms:%s:false:%s", v.Id, grade.Id)
+				GlobalState[key] = grade.Permissions
+			end
+		end
+	end
 
-  local govResults = MySQL.query.await([[
-		  SELECT Id, Name, Grades, Salary, SalaryTier, LastUpdated, Workplaces
-		  FROM jobs
-		  WHERE Type = "Government"
-	  ]], {})
-
-  if govResults and #govResults > 0 then
-    for _, v in ipairs(govResults) do
-      local Workplaces = json.decode(v.Workplaces)
-      for _, Workplace in ipairs(Workplaces) do
-        for _, Grade in ipairs(Workplace.Grades) do
-          local key = string.format("JobPerms:%s:%s:%s", v.Id, Workplace.Id, Grade.Id)
-          GlobalState[key] = Grade.Permissions
-        end
-      end
-    end
-  end
-
-  local companyResults = MySQL.query.await([[
-		  SELECT Id, Name, Grades, Salary, SalaryTier, LastUpdated, Workplaces
-		  FROM jobs
-		  WHERE Type = "Company"
-	  ]], {})
-
-  if companyResults and #companyResults > 0 then
-    for _, v in ipairs(companyResults) do
-      local Grades = json.decode(v.Grades)
-      for _, Grade in ipairs(Grades) do
-        local key = string.format("JobPerms:%s:false:%s", v.Id, Grade.Id)
-        GlobalState[key] = Grade.Permissions
-      end
-    end
-  end
-
-  return true
+	return true
 end
 
 function RunStartup()
-  if _ranStartup then
-    return
-  end
-  _ranStartup = true
+	if _ranStartup then
+		return
+	end
+	_ranStartup = true
 
-  local function replaceExistingDefaultJob(_id, document)
-    local deleteResult = MySQL.query.await('DELETE FROM jobs WHERE Id = ?', { _id })
+	local function replaceExistingDefaultJob(_id, document)
+		local p = promise.new()
+		PersistJobDoc(document, function(success)
+			if not success then
+				plsr.Logger:Error("Jobs", "Error Inserting Job on Default Job Update")
+				p:resolve(false)
+			else
+				Wait(10000)
+				p:resolve(true)
+			end
+		end)
+		return p
+	end
 
-    if deleteResult > 0 then
-      local insertResult = MySQL.insert.await(
-        'INSERT INTO jobs (Id, Name, Type, Workplaces, Grades, Salary, SalaryTier, LastUpdated, Owner, Custom, Hidden) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        {
-          _id,
-          document.Name,
-          document.Type,
-          json.encode(document.Workplaces),
-          json.encode(document.Grades),
-          document.Salary,
-          document.SalaryTier,
-          document.LastUpdated,
-          document.Owner,
-          document.Custom and 1 or 0,
-          document.Hidden and 1 or 0
-        })
+	local function insertDefaultJob(document)
+		local p = promise.new()
+		PersistJobDoc(document, function(success)
+			if not success then
+				plsr.Logger:Error("Jobs", "Error Inserting Job on Default Job Update")
+				p:resolve(false)
+			else
+				p:resolve(true)
+			end
+		end)
+		return p
+	end
 
-      if insertResult then
-        Wait(10000)
-        return true
-      else
-        exports['pulsar-core']:LoggerError("Jobs", "Error Inserting Job on Default Job Update")
-        return false
-      end
-    else
-      exports['pulsar-core']:LoggerError("Jobs", "Error Deleting Job on Default Job Update")
-      return false
-    end
-  end
+	local jobsFetch = FindAllJobs()
+	local currentData = {}
+	for k, v in ipairs(jobsFetch) do
+		currentData[v.Id] = v
+	end
 
-  local function insertDefaultJob(document)
-    local insertResult = MySQL.insert.await(
-      'INSERT INTO jobs (Id, Name, Type, Workplaces, Grades, LastUpdated, Salary, SalaryTier, Owner, Custom, Hidden) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      {
-        document.Id,
-        document.Name,
-        document.Type,
-        json.encode(document.Workplaces),
-        json.encode(document.Grades),
-        document.LastUpdated,
-        document.Salary,
-        document.SalaryTier,
-        document.Owner,
-        document.Custom and 1 or 0,
-        document.Hidden and 1 or 0
-      })
+	local awaitingPromises = {}
+	for k, v in ipairs(_defaultJobData) do
+		local currentDataForJob = currentData[v.Id]
+		if currentDataForJob and currentDataForJob.LastUpdated < v.LastUpdated then
+			table.insert(awaitingPromises, replaceExistingDefaultJob(currentDataForJob._id, v))
+		elseif not currentDataForJob then
+			table.insert(awaitingPromises, insertDefaultJob(v))
+		end
+	end
 
-    if insertResult then
-      return true
-    else
-      exports['pulsar-core']:LoggerError('Jobs', 'Error Inserting Job on Default Job Update')
-      return false
-    end
-  end
+	if #awaitingPromises > 0 then
+		Citizen.Await(promise.all(awaitingPromises))
+		plsr.Logger:Info("Jobs", "Inserted/Replaced ^2" .. #awaitingPromises .. "^7 Default Jobs")
+		jobsFetch = FindAllJobs()
+	end
 
-  local jobsFetch = FindAllJobs()
-  local currentData = {}
-  for k, v in ipairs(jobsFetch) do
-    currentData[v.Id] = v
-  end
-
-  for k, v in ipairs(_defaultJobData) do
-    local currentDataForJob = currentData[v.Id]
-    if currentDataForJob and v.LastUpdated < v.LastUpdated then
-      replaceExistingDefaultJob(currentDataForJob._id, v)
-    elseif not currentDataForJob then
-      insertDefaultJob(v)
-    end
-  end
-
-  RefreshAllJobData()
-  exports['pulsar-core']:LoggerTrace("Jobs", string.format("Loaded ^2%s^7 Jobs", JOB_COUNT))
-  TriggerEvent("Jobs:Server:CompleteStartup")
+	RefreshAllJobData()
+	plsr.Logger:Trace("Jobs", string.format("Loaded ^2%s^7 Jobs", JOB_COUNT))
+	TriggerEvent("Jobs:Server:CompleteStartup")
 end

@@ -1,6 +1,6 @@
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683997150,
+	LastUpdated = 1784524361,
 	Id = "noodle",
 	Name = "Noodle Exchange",
 	Salary = 600,
@@ -48,6 +48,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,

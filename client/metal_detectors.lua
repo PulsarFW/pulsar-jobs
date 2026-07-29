@@ -8,7 +8,7 @@ function RegisterMetalDetectors()
 	_metalDetectorPropsLoaded = {}
 
 	for k, v in pairs(_metalDetectorLocations) do
-		exports['pulsar-polyzone']:CreateBox(string.format("%s-metal-detector-zone", k), v.coords, v.width, v.length, {
+		plsr.Polyzone.Create:Box(string.format("%s-metal-detector-zone", k), v.coords, v.width, v.length, {
 			heading = v.options.heading,
 			--debugPoly=true,
 			minZ = v.options.minZ,
@@ -37,7 +37,7 @@ function RegisterMetalDetectors()
 end
 
 RegisterNetEvent("MetalDetector:Client:Sync", function(data)
-	local _pedc = GetEntityCoords(LocalPlayer.state.ped, true)
+	local _pedc = GetEntityCoords(PlayerPedId(), true)
 	if #(_pedc - data) <= 5.0 then
 		PlaySoundFromCoord(-1, "CHECKPOINT_MISSED", data.x, data.y, data.z, "HUD_MINI_GAME_SOUNDSET", 0, 2.5, 1)
 	end
@@ -46,8 +46,8 @@ end)
 AddEventHandler("Polyzone:Enter", function(id, testedPoint, insideZones, data)
 	for k, v in pairs(_metalDetectorLocations) do
 		if id == string.format("%s-metal-detector-zone", k) then
-			if exports.ox_inventory:ItemsHasType(2, 1) then
-				exports["pulsar-core"]:ServerCallback("MetalDetector:Server:Sync", v.coords, function() end)
+			if plsr.Inventory.Items:HasType(2, 1) then
+				plsr.Callbacks:ServerCallback("MetalDetector:Server:Sync", v.coords, function() end)
 			end
 		end
 	end

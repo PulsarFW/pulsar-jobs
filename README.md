@@ -6,13 +6,18 @@
 
 # PULSAR-JOBS
 
-### Job assignments, duty toggling, and pay grades
+### Employment system — job/grade assignment, duty toggling, salary payout, and the default job catalog
 
 <br/>
 
 ![Lua](https://img.shields.io/badge/Lua_5.4-2C2D72?style=flat-square&logo=lua&logoColor=white)
 ![FiveM](https://img.shields.io/badge/FiveM-F40552?style=flat-square)
-![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=mariadb)
+
+<br/>
+
+<sub>Enjoy the framework? A coffee helps keep active development, hardening, and support going.</sub>
+
+<a href="https://buymeacoffee.com/pulsarframework"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 180px !important;" /></a>
 
 <br/>
 
@@ -24,20 +29,24 @@
 
 ## Overview
 
-Job management system for Pulsar Framework. Handles job assignments, grade/rank definitions, duty toggling, paycheck scheduling, and exposes job data to other resources via the core character state.
+Registers `plsr.Jobs` — `GiveJob`/`RemoveJob`, on/off-duty toggling with salary accrual, and job permission checks (`plsr.Jobs.Permissions:HasJob`). `config/defaultJobs/` seeds the starting job catalog; `config/spawns.lua` covers job-specific spawn points. Also includes a standalone metal-detector treasure-hunting mechanic.
+
+> [!WARNING]
+> The character's `Jobs` field is a JSON array stored on `characters.data`. Every offline-character write path here goes through `JSON_SET` — pass values through `CAST(? AS JSON)`, not a raw `json.encode`'d string parameter, or the field silently corrupts into a JSON string instead of an array.
 
 ---
 
 ## Dependencies
 
-- `pulsar-core` — framework core
-- `oxmysql` — database layer
+- `pulsar_core` — framework core
+- `pulsar_characters` — job data lives on the character's `DataStore`
+- `pulsar_pwnzor` — anti-cheat check loaded alongside every resource
 
 ---
 
 ## License
 
-This resource is proprietary software. All rights reserved by the Pulsar Framework team. Unauthorized distribution or resale is prohibited.
+This resource is free to use and modify under the [Pulsar Framework License](LICENSE.md). Redistribution is welcome as long as it stays free — selling this resource or any derivative of it requires written permission from the Pulsar Framework team.
 
 ---
 

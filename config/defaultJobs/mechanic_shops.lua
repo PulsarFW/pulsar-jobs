@@ -1,6 +1,6 @@
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "tuna",
 	Name = "Tuner Shop",
 	Salary = 700,
@@ -35,6 +35,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -50,7 +56,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "redline",
 	Name = "Redline",
 	Salary = 700,
@@ -85,6 +91,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -100,7 +112,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "blackline",
 	Name = "Blackline Mechanics",
 	Salary = 700,
@@ -124,6 +136,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -139,7 +157,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "tirenutz",
 	Name = "Tire Nutz",
 	Salary = 700,
@@ -174,6 +192,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -189,7 +213,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "hayes",
 	Name = "Hayes Autos",
 	Salary = 700,
@@ -224,6 +248,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -239,7 +269,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "atomic",
 	Name = "Atomic Mechanics",
 	Salary = 700,
@@ -274,6 +304,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -289,7 +325,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "harmony",
 	Name = "Harmony Repairs",
 	Salary = 700,
@@ -324,6 +360,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -339,7 +381,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "superperformance",
 	Name = "Super Performance",
 	Salary = 700,
@@ -374,6 +416,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -389,7 +437,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "autoexotics",
 	Name = "Auto Exotics",
 	Salary = 700,
@@ -424,6 +472,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -439,7 +493,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "ottos",
 	Name = "Ottos Auto's",
 	Salary = 700,
@@ -474,6 +528,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -489,7 +549,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1683994402,
+	LastUpdated = 1784524361,
 	Id = "bennys",
 	Name = "Benny's",
 	Salary = 700,
@@ -524,6 +584,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -539,7 +605,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1686072674,
+	LastUpdated = 1784524361,
 	Id = "paleto_tuners",
 	Name = "Paleto Tuners",
 	Salary = 700,
@@ -574,6 +640,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
@@ -589,7 +661,7 @@ table.insert(_defaultJobData, {
 
 table.insert(_defaultJobData, {
 	Type = "Company",
-	LastUpdated = 1693315968,
+	LastUpdated = 1784524361,
 	Id = "dreamworks",
 	Name = "Dreamworks",
 	Salary = 700,
@@ -624,6 +696,12 @@ table.insert(_defaultJobData, {
 			Level = 99,
 			Permissions = {
 				JOB_MANAGEMENT = true,
+				BANK_ACCOUNT_MANAGE = true,
+				BANK_ACCOUNT_WITHDRAW = true,
+				BANK_ACCOUNT_DEPOSIT = true,
+				BANK_ACCOUNT_TRANSACTIONS = true,
+				BANK_ACCOUNT_BILL = true,
+				BANK_ACCOUNT_BALANCE = true,
 				JOB_MANAGE_EMPLOYEES = true,
 				JOB_HIRE = true,
 				JOB_FIRE = true,
