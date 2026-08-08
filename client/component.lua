@@ -5,7 +5,7 @@ _JOBS = {
 				local jobs = plsr.State.character.Jobs or {}
 				return jobs
 			end
-			return false
+			return {}
 		end,
 		HasJob = function(self, jobId, workplaceId, gradeId, gradeLevel, checkDuty, permissionKey)
 			local jobs = plsr.Jobs.Permissions:GetJobs()
